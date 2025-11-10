@@ -27,6 +27,23 @@ body, html, #root, .App {
     background: #3e3e3e;
 }
 
+/* Smooth scrolling for all scrollable containers */
+* {
+    scroll-behavior: smooth;
+}
+
+/* Enable smooth mouse wheel scrolling */
+.overflow-y-auto {
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+/* For Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #282828 #121212;
+}
+
 /* Smooth transitions for interactive elements */
 button, a {
     transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
