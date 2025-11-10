@@ -270,6 +270,7 @@ const Home = () => {
               moodData={moodData}
               loading={loading}
               isAuthenticated={isAuthenticated}
+              uploadedSongs={uploadedSongs}
             />
           </div>
         </div>
