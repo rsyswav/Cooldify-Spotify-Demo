@@ -67,10 +67,11 @@ async def get_status_checks():
     
     return status_checks
 
-# Include the router in the main app
+# Include the spotify router in the api router
+api_router.include_router(spotify_router)
+
+# Include the main api router in the app
 app.include_router(api_router)
-app.include_router(spotify_router)
-app.include_router(spotify_router)
 
 app.add_middleware(
     CORSMiddleware,
