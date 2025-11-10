@@ -68,21 +68,86 @@ const Header = ({ onLoginClick, onLogout, isAuthenticated, userProfile, onSearch
   return (
     <div className="h-16 bg-gradient-to-b from-black/60 to-transparent backdrop-blur-sm flex items-center justify-between px-8 absolute top-0 left-64 right-0 z-10">
       {/* Navigation Arrows */}
-      <div className="flex gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="rounded-full bg-black/40 hover:bg-black/60 text-white"
-        >
-          <ChevronLeft className="h-5 w-5" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="rounded-full bg-black/40 hover:bg-black/60 text-white"
-        >
-          <ChevronRight className="h-5 w-5" />
-        </Button>
+      <div className="flex gap-4 items-center flex-1">
+        <div className="flex gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full bg-black/40 hover:bg-black/60 text-white"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full bg-black/40 hover:bg-black/60 text-white"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </Button>
+        </div>
+
+        {/* Search Bar */}
+        <div className="relative max-w-md flex-1">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input
+              type="text"
+              placeholder={isAuthenticated ? "What do you want to play?" : "Log in to search"}
+              value={searchQuery}
+              onChange={handleInputChange}
+              onFocus={() => searchQuery.length > 2 && setShowResults(true)}
+              onBlur={() => setTimeout(() => setShowResults(false), 200)}
+              disabled={!isAuthenticated}
+              className="w-full pl-10 pr-10 py-2 bg-white text-black placeholder:text-gray-500 border-0 rounded-full focus:ring-2 focus:ring-cyan-400 disabled:bg-gray-700 disabled:text-gray-400"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setSearchResults([]);
+                  setShowResults(false);
+                }}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-black"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+
+          {/* Search Results Dropdown */}
+          {showResults && searchResults.length > 0 && (
+            <div className="absolute top-full mt-2 w-full bg-gray-900 rounded-lg shadow-2xl border border-gray-800 max-h-96 overflow-y-auto z-50">
+              {searchResults.map((track) => (
+                <div
+                  key={track.id}
+                  onClick={() => handleTrackClick(track)}
+                  className="flex items-center p-3 hover:bg-gray-800 transition-colors cursor-pointer border-b border-gray-800 last:border-0"
+                >
+                  <img
+                    src={track.album?.images?.[0]?.url || '/placeholder.png'}
+                    alt={track.name}
+                    className="w-10 h-10 rounded shadow-md"
+                  />
+                  <div className="ml-3 flex-1 min-w-0">
+                    <p className="text-white text-sm font-medium truncate">{track.name}</p>
+                    <p className="text-xs text-gray-400 truncate">
+                      {track.artists?.map((a) => a.name).join(', ')}
+                    </p>
+                  </div>
+                  <p className="text-gray-400 text-xs ml-2">
+                    {formatDuration(track.duration_ms)}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {showResults && searchQuery.length > 2 && searchResults.length === 0 && !isSearching && (
+            <div className="absolute top-full mt-2 w-full bg-gray-900 rounded-lg shadow-2xl border border-gray-800 p-4 text-center z-50">
+              <p className="text-gray-400 text-sm">No results found</p>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Login/Profile Button */}
