@@ -4,8 +4,24 @@ import { Button } from './ui/button';
 import SearchBar from './SearchBar';
 
 const Sidebar = ({ playlists, onPlaylistSelect, selectedPlaylist, onTrackSelect, isAuthenticated, onSearch, onUploadClick, onCommunityClick, uploadedSongsCount }) => {
+  const playlistScrollRef = React.useRef(null);
+
+  const scrollPlaylistsUp = () => {
+    playlistScrollRef.current?.scrollBy({
+      top: -200,
+      behavior: 'smooth'
+    });
+  };
+
+  const scrollPlaylistsDown = () => {
+    playlistScrollRef.current?.scrollBy({
+      top: 200,
+      behavior: 'smooth'
+    });
+  };
+
   return (
-    <div className="w-64 bg-black h-full flex flex-col">
+    <div className="w-64 bg-black h-full flex flex-col relative">
       {/* Logo */}
       <div className="p-6">
         <div className="flex items-center gap-3">
