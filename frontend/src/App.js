@@ -54,7 +54,7 @@ const Home = () => {
           artists: [{ name: song.artist }],
           album: {
             name: song.album || 'Unknown Album',
-            images: [{ url: song.cover_image_url || 'https://via.placeholder.com/300' }]
+            images: [{ url: song.cover_image_url || 'https://images.unsplash.com/photo-1619983081563-430f63602796?w=300&h=300&fit=crop' }]
           },
           duration_ms: song.duration_ms || 0,
           preview_url: song.audio_url // This is the full audio file, not just preview
