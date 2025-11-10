@@ -133,13 +133,16 @@ const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodD
           </Card>
         </div>
 
-        {/* Uploaded Songs Section */}
-        {uploadedSongs && uploadedSongs.length > 0 && (
+        {/* Uploaded Songs Section - Only show when not viewing as playlist */}
+        {uploadedSongs && uploadedSongs.length > 0 && !window.location.hash.includes('community') && (
           <div className="mb-12">
             <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
               <Music2 className="mr-2 h-6 w-6 text-cyan-400" />
-              Community Uploads
+              Community Uploads Preview
             </h3>
+            <p className="text-gray-400 text-sm mb-4">
+              Click "Community Uploads" in the sidebar to see all {uploadedSongs.length} songs
+            </p>
             <div className="space-y-2">
               {uploadedSongs.map((track, index) => (
                 <div
