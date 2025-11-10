@@ -1,24 +1,101 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import MainContent from "./components/MainContent";
 import Player from "./components/Player";
+import CallbackPage from "./components/CallbackPage";
 import { mockPlaylists, mockTracks, mockMoodData, mockCurrentTrack } from "./mock";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "./hooks/use-toast";
+import spotifyApi from "./services/spotifyApi";
 
 const Home = () => {
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
   const [currentTrack, setCurrentTrack] = useState(mockCurrentTrack);
+  const [playlists, setPlaylists] = useState(mockPlaylists);
+  const [tracks, setTracks] = useState(mockTracks);
+  const [moodData, setMoodData] = useState(mockMoodData);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userPlaylists, setUserPlaylists] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handlePlaylistSelect = (playlist) => {
+  useEffect(() => {
+    // Check if user is authenticated
+    const authenticated = spotifyApi.isAuthenticated();
+    setIsAuthenticated(authenticated);
+
+    if (authenticated) {
+      loadUserData();
+    }
+  }, []);
+
+  const loadUserData = async () => {
+    setLoading(true);
+    try {
+      // Load featured playlists
+      const featured = await spotifyApi.getFeaturedPlaylists(20);
+      if (featured && featured.length > 0) {
+        setPlaylists(featured);
+      }
+
+      // Load user's playlists for sidebar
+      const userPlaylistsData = await spotifyApi.getUserPlaylists(50);
+      if (userPlaylistsData && userPlaylistsData.length > 0) {
+        setUserPlaylists(userPlaylistsData);
+      }
+    } catch (error) {
+      console.error('Error loading user data:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load playlists. Using demo data.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePlaylistSelect = async (playlist) => {
     setSelectedPlaylist(playlist);
-    toast({
-      title: "Playlist Selected",
-      description: `Now viewing: ${playlist.name}`,
-    });
+    
+    if (!isAuthenticated) {
+      toast({
+        title: "Playlist Selected",
+        description: `Now viewing: ${playlist.name}`,
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Load tracks for selected playlist
+      const playlistTracks = await spotifyApi.getPlaylistTracks(playlist.id);
+      if (playlistTracks && playlistTracks.length > 0) {
+        setTracks(playlistTracks);
+      }
+
+      // Load mood data for playlist
+      const mood = await spotifyApi.getPlaylistMood(playlist.id);
+      if (mood) {
+        setMoodData(mood);
+      }
+
+      toast({
+        title: "Playlist Loaded",
+        description: `${playlist.name} - ${playlistTracks.length} tracks`,
+      });
+    } catch (error) {
+      console.error('Error loading playlist:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load playlist details.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleTrackSelect = (track) => {
@@ -29,30 +106,60 @@ const Home = () => {
     });
   };
 
-  const handleLoginClick = () => {
+  const handleLoginClick = async () => {
+    try {
+      const authUrl = await spotifyApi.getAuthUrl();
+      window.location.href = authUrl;
+    } catch (error) {
+      console.error('Error initiating login:', error);
+      toast({
+        title: "Login Error",
+        description: "Failed to initiate Spotify login. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleLogout = () => {
+    spotifyApi.clearTokens();
+    setIsAuthenticated(false);
+    setPlaylists(mockPlaylists);
+    setTracks(mockTracks);
+    setMoodData(mockMoodData);
+    setUserPlaylists([]);
     toast({
-      title: "Login Feature",
-      description: "Spotify OAuth login will be available after backend integration",
+      title: "Logged Out",
+      description: "You have been logged out successfully.",
     });
   };
+
+  const allPlaylists = isAuthenticated && userPlaylists.length > 0 
+    ? [...userPlaylists] 
+    : mockPlaylists;
 
   return (
     <div className="h-screen flex flex-col bg-black">
       <div className="flex flex-1 overflow-hidden relative">
         <Sidebar
-          playlists={mockPlaylists}
+          playlists={allPlaylists}
           onPlaylistSelect={handlePlaylistSelect}
           selectedPlaylist={selectedPlaylist}
         />
         <div className="flex-1 flex flex-col relative">
-          <Header onLoginClick={handleLoginClick} />
+          <Header 
+            onLoginClick={handleLoginClick}
+            onLogout={handleLogout}
+            isAuthenticated={isAuthenticated}
+          />
           <div className="pt-16 flex-1 overflow-hidden">
             <MainContent
-              playlists={mockPlaylists}
+              playlists={playlists}
               onPlaylistSelect={handlePlaylistSelect}
               onTrackSelect={handleTrackSelect}
-              tracks={mockTracks}
-              moodData={mockMoodData}
+              tracks={tracks}
+              moodData={moodData}
+              loading={loading}
+              isAuthenticated={isAuthenticated}
             />
           </div>
         </div>
@@ -69,6 +176,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/callback" element={<CallbackPage />} />
         </Routes>
       </BrowserRouter>
     </div>
