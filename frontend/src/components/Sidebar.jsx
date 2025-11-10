@@ -101,7 +101,7 @@ const Sidebar = ({ playlists, onPlaylistSelect, selectedPlaylist, onTrackSelect,
       </div>
 
       {/* Playlists */}
-      <div className="mt-6 flex-1 overflow-y-auto px-3">
+      <div className="mt-6 flex-1 overflow-y-auto px-3" ref={playlistScrollRef}>
         <div className="border-t border-gray-800 pt-4">
           {playlists.map((playlist) => (
             <button
