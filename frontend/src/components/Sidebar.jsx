@@ -32,13 +32,11 @@ const Sidebar = ({ playlists, onPlaylistSelect, selectedPlaylist, onTrackSelect,
           <Home className="mr-3 h-5 w-5" />
           Home
         </Button>
-        <Button
-          variant="ghost"
-          className="w-full justify-start text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
-        >
-          <Search className="mr-3 h-5 w-5" />
-          Search
-        </Button>
+        <SearchBar 
+          onTrackSelect={onTrackSelect}
+          isAuthenticated={isAuthenticated}
+          onSearch={onSearch}
+        />
         <Button
           variant="ghost"
           className="w-full justify-start text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
