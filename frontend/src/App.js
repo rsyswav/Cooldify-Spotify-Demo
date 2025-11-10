@@ -28,6 +28,7 @@ const Home = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [uploadedSongs, setUploadedSongs] = useState([]);
+  const [showCommunityPlaylist, setShowCommunityPlaylist] = useState(false);
 
   useEffect(() => {
     // Check if user is authenticated
