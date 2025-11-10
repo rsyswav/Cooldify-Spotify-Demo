@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import MainContent from "./components/MainContent";
 import Player from "./components/Player";
 import CallbackPage from "./components/CallbackPage";
+import UploadSongDialog from "./components/UploadSongDialog";
 import { mockPlaylists, mockTracks, mockMoodData, mockCurrentTrack } from "./mock";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "./hooks/use-toast";
