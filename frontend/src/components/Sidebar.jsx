@@ -56,6 +56,14 @@ const Sidebar = ({ playlists, onPlaylistSelect, selectedPlaylist, onTrackSelect,
         </Button>
         <Button
           variant="ghost"
+          className="w-full justify-start text-cyan-400 hover:text-cyan-300 hover:bg-gray-800 transition-colors"
+          onClick={onUploadClick}
+        >
+          <Upload className="mr-3 h-5 w-5" />
+          Upload Song
+        </Button>
+        <Button
+          variant="ghost"
           className="w-full justify-start text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
         >
           <Heart className="mr-3 h-5 w-5" />
