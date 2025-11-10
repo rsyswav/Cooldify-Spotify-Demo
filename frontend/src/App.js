@@ -35,6 +35,12 @@ const Home = () => {
   const loadUserData = async () => {
     setLoading(true);
     try {
+      // Load user profile
+      const profile = await spotifyApi.getUserProfile();
+      if (profile) {
+        setUserProfile(profile);
+      }
+
       // Load featured playlists
       const featured = await spotifyApi.getFeaturedPlaylists(20);
       if (featured && featured.length > 0) {
