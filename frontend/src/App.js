@@ -79,20 +79,33 @@ const Home = () => {
     try {
       // Load tracks for selected playlist
       const playlistTracks = await spotifyApi.getPlaylistTracks(playlist.id);
+      console.log('Playlist tracks loaded:', playlistTracks?.length);
+      
       if (playlistTracks && playlistTracks.length > 0) {
         setTracks(playlistTracks);
-      }
+        
+        // Load mood data for playlist
+        try {
+          const mood = await spotifyApi.getPlaylistMood(playlist.id);
+          if (mood) {
+            setMoodData(mood);
+          }
+        } catch (moodError) {
+          console.error('Error loading mood data:', moodError);
+          // Continue even if mood fails
+        }
 
-      // Load mood data for playlist
-      const mood = await spotifyApi.getPlaylistMood(playlist.id);
-      if (mood) {
-        setMoodData(mood);
+        toast({
+          title: "Playlist Loaded",
+          description: `${playlist.name} - ${playlistTracks.length} tracks`,
+        });
+      } else {
+        toast({
+          title: "Empty Playlist",
+          description: `${playlist.name} has no tracks`,
+          variant: "destructive"
+        });
       }
-
-      toast({
-        title: "Playlist Loaded",
-        description: `${playlist.name} - ${playlistTracks.length} tracks`,
-      });
     } catch (error) {
       console.error('Error loading playlist:', error);
       toast({
@@ -102,6 +115,21 @@ const Home = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSearch = async (query) => {
+    try {
+      const results = await spotifyApi.searchTracks(query, 20);
+      return results;
+    } catch (error) {
+      console.error('Search error:', error);
+      toast({
+        title: "Search Error",
+        description: "Failed to search tracks.",
+        variant: "destructive"
+      });
+      return [];
     }
   };
 
