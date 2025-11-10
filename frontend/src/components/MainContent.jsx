@@ -4,10 +4,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
 
-const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodData }) => {
+const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodData, loading, isAuthenticated }) => {
   return (
     <div className="flex-1 overflow-y-auto bg-gradient-to-b from-gray-900 via-gray-900 to-black">
       <div className="p-8">
+        {/* Loading Indicator */}
+        {loading && (
+          <div className="flex justify-center items-center py-8">
+            <Loader2 className="h-8 w-8 text-cyan-400 animate-spin" />
+            <span className="ml-3 text-gray-300">Loading...</span>
+          </div>
+        )}
         {/* Header */}
         <div className="mb-8">
           <h2 className="text-4xl font-bold text-white mb-2">Good evening</h2>
