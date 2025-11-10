@@ -44,10 +44,18 @@ const Player = ({ currentTrack }) => {
 
   const togglePlay = () => {
     if (audioRef.current) {
+      if (!currentTrack?.preview_url) {
+        // Show error toast if no preview available
+        return;
+      }
+      
       if (isPlaying) {
         audioRef.current.pause();
       } else {
-        audioRef.current.play();
+        audioRef.current.play().catch(error => {
+          console.error('Playback error:', error);
+          setIsPlaying(false);
+        });
       }
       setIsPlaying(!isPlaying);
     }
