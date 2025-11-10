@@ -264,6 +264,73 @@ class SpotifyAPITester:
         except Exception as e:
             self.log_test("API Health", "ERROR", f"Cannot reach API: {str(e)}")
     
+    async def test_specific_playlist_tracks(self):
+        """Test specific playlist ID: 5IFOShdDVduOliVexlcD4g"""
+        playlist_id = "5IFOShdDVduOliVexlcD4g"
+        
+        # Test without auth
+        try:
+            response = await self.client.get(f"{API_BASE}/spotify/playlists/{playlist_id}/tracks")
+            if response.status_code == 422:
+                self.log_test("Specific Playlist Tracks (No Auth)", "PASS", "Properly requires authorization header")
+            else:
+                self.log_test("Specific Playlist Tracks (No Auth)", "FAIL", f"Expected 422, got {response.status_code}: {response.text}")
+        except Exception as e:
+            self.log_test("Specific Playlist Tracks (No Auth)", "ERROR", f"Exception: {str(e)}")
+        
+        # Test with fake token to see response structure
+        try:
+            headers = {"Authorization": "Bearer fake_token_12345"}
+            response = await self.client.get(f"{API_BASE}/spotify/playlists/{playlist_id}/tracks", headers=headers)
+            
+            self.log_test("Specific Playlist Tracks (Fake Token)", "INFO", 
+                         f"Status: {response.status_code}, Response: {response.text[:500]}...")
+            
+            if response.status_code == 200:
+                data = response.json()
+                tracks = data.get('tracks', [])
+                self.log_test("Specific Playlist Response Structure", "INFO", 
+                             f"Tracks count: {len(tracks)}, Sample track keys: {list(tracks[0].keys()) if tracks else 'No tracks'}")
+                
+                # Check for preview_url in tracks
+                if tracks:
+                    preview_urls = [track.get('preview_url') for track in tracks[:5]]
+                    self.log_test("Preview URLs Check", "INFO", f"First 5 preview URLs: {preview_urls}")
+            
+        except Exception as e:
+            self.log_test("Specific Playlist Tracks (Fake Token)", "ERROR", f"Exception: {str(e)}")
+
+    async def test_specific_playlist_mood(self):
+        """Test mood calculation for specific playlist ID: 5IFOShdDVduOliVexlcD4g"""
+        playlist_id = "5IFOShdDVduOliVexlcD4g"
+        
+        # Test without auth
+        try:
+            response = await self.client.get(f"{API_BASE}/spotify/playlists/{playlist_id}/mood")
+            if response.status_code == 422:
+                self.log_test("Specific Playlist Mood (No Auth)", "PASS", "Properly requires authorization header")
+            else:
+                self.log_test("Specific Playlist Mood (No Auth)", "FAIL", f"Expected 422, got {response.status_code}: {response.text}")
+        except Exception as e:
+            self.log_test("Specific Playlist Mood (No Auth)", "ERROR", f"Exception: {str(e)}")
+        
+        # Test with fake token to see response structure
+        try:
+            headers = {"Authorization": "Bearer fake_token_12345"}
+            response = await self.client.get(f"{API_BASE}/spotify/playlists/{playlist_id}/mood", headers=headers)
+            
+            self.log_test("Specific Playlist Mood (Fake Token)", "INFO", 
+                         f"Status: {response.status_code}, Response: {response.text[:500]}...")
+            
+            if response.status_code == 200:
+                data = response.json()
+                self.log_test("Mood Response Structure", "INFO", f"Mood data keys: {list(data.keys())}")
+            elif response.status_code == 404:
+                self.log_test("Mood Response (404)", "INFO", "No tracks found - expected with invalid token")
+            
+        except Exception as e:
+            self.log_test("Specific Playlist Mood (Fake Token)", "ERROR", f"Exception: {str(e)}")
+
     async def run_all_tests(self):
         """Run all test cases"""
         print(f"🎵 Starting Cooldify Spotify API Tests")
@@ -272,6 +339,11 @@ class SpotifyAPITester:
         
         # Test basic API health first
         await self.test_basic_api_health()
+        
+        # Test specific playlist (user's request)
+        print("\n🎯 Testing Specific Playlist (5IFOShdDVduOliVexlcD4g):")
+        await self.test_specific_playlist_tracks()
+        await self.test_specific_playlist_mood()
         
         # Test auth endpoints
         print("\n🔐 Testing Authentication Endpoints:")
@@ -308,11 +380,13 @@ class SpotifyAPITester:
         passed = len([r for r in self.test_results if r["status"] == "PASS"])
         failed = len([r for r in self.test_results if r["status"] == "FAIL"])
         errors = len([r for r in self.test_results if r["status"] == "ERROR"])
+        info = len([r for r in self.test_results if r["status"] == "INFO"])
         total = len(self.test_results)
         
         print(f"✅ Passed: {passed}")
         print(f"❌ Failed: {failed}")
         print(f"🚨 Errors: {errors}")
+        print(f"ℹ️  Info: {info}")
         print(f"📈 Total: {total}")
         
         if failed > 0 or errors > 0:
