@@ -128,11 +128,18 @@ const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodD
                   className="group bg-gray-800/40 hover:bg-gray-800/60 p-4 rounded-lg transition-all duration-300 cursor-pointer"
                 >
                   <div className="relative mb-4">
-                    <img
-                      src={track.album.images[0]?.url}
-                      alt={track.name}
-                      className="w-full aspect-square object-cover rounded-md shadow-xl"
-                    />
+                    <div className="relative w-full aspect-square overflow-hidden rounded-md">
+                      <img
+                        src={track.album.images[0]?.url}
+                        alt={track.name}
+                        className="w-full h-full object-cover shadow-xl"
+                        onError={(e) => {
+                          e.target.src = 'https://images.unsplash.com/photo-1619983081563-430f63602796?w=300&h=300&fit=crop';
+                        }}
+                      />
+                      {/* Cyan overlay for community uploads */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
                     <Button
                       size="icon"
                       className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 bg-cyan-500 hover:bg-cyan-400 text-black rounded-full h-12 w-12 shadow-xl"
