@@ -10,6 +10,7 @@ from typing import List
 import uuid
 from datetime import datetime, timezone
 from routes.spotify_routes import router as spotify_router
+from routes.songs_routes import router as songs_router
 
 
 ROOT_DIR = Path(__file__).parent
