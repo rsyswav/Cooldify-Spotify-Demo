@@ -268,6 +268,8 @@ const Home = () => {
           isAuthenticated={isAuthenticated}
           onSearch={handleSearch}
           onUploadClick={handleUploadClick}
+          onCommunityClick={handleCommunityClick}
+          uploadedSongsCount={uploadedSongs.length}
         />
         <div className="flex-1 flex flex-col relative">
           <Header 
