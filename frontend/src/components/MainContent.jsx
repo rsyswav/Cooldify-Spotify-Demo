@@ -1,5 +1,5 @@
-import React from 'react';
-import { Play, TrendingUp, Activity, Music2, Gauge, Loader2 } from 'lucide-react';
+import React, { useRef, useState, useEffect } from 'react';
+import { Play, TrendingUp, Activity, Music2, Gauge, Loader2, ChevronUp, ChevronDown } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
