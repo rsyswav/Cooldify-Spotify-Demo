@@ -6,8 +6,11 @@ import { Progress } from './ui/progress';
 
 const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodData, loading, isAuthenticated, uploadedSongs, selectedPlaylist }) => {
   const scrollContainerRef = useRef(null);
+  const playlistScrollRef = useRef(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [showScrollBottom, setShowScrollBottom] = useState(true);
+  const [showPlaylistScrollLeft, setShowPlaylistScrollLeft] = useState(false);
+  const [showPlaylistScrollRight, setShowPlaylistScrollRight] = useState(true);
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {
