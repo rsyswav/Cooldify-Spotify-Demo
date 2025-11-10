@@ -110,10 +110,80 @@ const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodD
           </p>
         </div>
 
-        {/* Featured Playlists Grid */}
-        <div className="mb-12">
+        {/* Community Songs Section - Always visible at top */}
+        {uploadedSongs && uploadedSongs.length > 0 && (
+          <div className="mb-12">
+            <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
+              <Music2 className="mr-2 h-6 w-6 text-cyan-400" />
+              Community Songs
+              <span className="ml-3 text-sm font-normal text-gray-400">
+                {uploadedSongs.length} songs
+              </span>
+            </h3>
+            <div className="grid grid-cols-3 gap-6">
+              {uploadedSongs.slice(0, 6).map((track) => (
+                <div
+                  key={track.id}
+                  onClick={() => onTrackSelect(track)}
+                  className="group bg-gray-800/40 hover:bg-gray-800/60 p-4 rounded-lg transition-all duration-300 cursor-pointer"
+                >
+                  <div className="relative mb-4">
+                    <img
+                      src={track.album.images[0]?.url}
+                      alt={track.name}
+                      className="w-full aspect-square object-cover rounded-md shadow-xl"
+                    />
+                    <Button
+                      size="icon"
+                      className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 bg-cyan-500 hover:bg-cyan-400 text-black rounded-full h-12 w-12 shadow-xl"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onTrackSelect(track);
+                      }}
+                    >
+                      <Play className="h-6 w-6" fill="currentColor" />
+                    </Button>
+                  </div>
+                  <h4 className="font-semibold text-white mb-1 truncate">{track.name}</h4>
+                  <p className="text-sm text-gray-400 line-clamp-2">
+                    {track.artists.map((a) => a.name).join(', ')}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Featured Playlists Grid with Scroll Buttons */}
+        <div className="mb-12 relative">
           <h3 className="text-2xl font-bold text-white mb-4">Featured Playlists</h3>
-          <div className="grid grid-cols-3 gap-6">
+          
+          {/* Scroll Buttons for Playlists */}
+          {showPlaylistScrollLeft && (
+            <Button
+              onClick={scrollPlaylistsLeft}
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-black/80 hover:bg-black text-white rounded-full h-12 w-12 shadow-xl"
+              size="icon"
+            >
+              <ChevronUp className="h-6 w-6 transform -rotate-90" />
+            </Button>
+          )}
+          
+          {showPlaylistScrollRight && (
+            <Button
+              onClick={scrollPlaylistsRight}
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-black/80 hover:bg-black text-white rounded-full h-12 w-12 shadow-xl"
+              size="icon"
+            >
+              <ChevronDown className="h-6 w-6 transform -rotate-90" />
+            </Button>
+          )}
+
+          <div 
+            ref={playlistScrollRef}
+            className="grid grid-cols-3 gap-6 overflow-x-auto scrollbar-hide"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
             {playlists.slice(0, 6).map((playlist) => (
               <div
                 key={playlist.id}
