@@ -290,6 +290,7 @@ const Home = () => {
               loading={loading}
               isAuthenticated={isAuthenticated}
               uploadedSongs={uploadedSongs}
+              selectedPlaylist={selectedPlaylist}
             />
           </div>
         </div>
