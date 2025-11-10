@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
 
-const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodData, loading, isAuthenticated }) => {
+const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodData, loading, isAuthenticated, uploadedSongs }) => {
   return (
     <div className="flex-1 overflow-y-auto bg-gradient-to-b from-gray-900 via-gray-900 to-black">
       <div className="p-8">
