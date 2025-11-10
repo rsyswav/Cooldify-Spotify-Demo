@@ -218,6 +218,7 @@ const Home = () => {
           onTrackSelect={handleTrackSelect}
           isAuthenticated={isAuthenticated}
           onSearch={handleSearch}
+          onUploadClick={handleUploadClick}
         />
         <div className="flex-1 flex flex-col relative">
           <Header 
