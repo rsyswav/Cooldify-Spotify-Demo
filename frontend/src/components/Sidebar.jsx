@@ -7,10 +7,19 @@ const Sidebar = ({ playlists, onPlaylistSelect, selectedPlaylist }) => {
     <div className="w-64 bg-black h-full flex flex-col">
       {/* Logo */}
       <div className="p-6">
-        <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-          Cooldify
-        </h1>
-        <p className="text-xs text-gray-400 mt-1">Cool your mood</p>
+        <div className="flex items-center gap-3">
+          <img 
+            src="https://img.freepik.com/premium-vector/blue-white-logo-with-letter-c-it_65335-1979.jpg" 
+            alt="Cooldify Logo" 
+            className="w-10 h-10 rounded-lg"
+          />
+          <div>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+              Cooldify
+            </h1>
+            <p className="text-xs text-gray-400">Cool your mood</p>
+          </div>
+        </div>
       </div>
 
       {/* Navigation */}
