@@ -20,6 +20,7 @@ const Home = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userPlaylists, setUserPlaylists] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
 
   useEffect(() => {
     // Check if user is authenticated
