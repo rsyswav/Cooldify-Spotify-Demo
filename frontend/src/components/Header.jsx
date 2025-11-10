@@ -32,17 +32,49 @@ const Header = ({ onLoginClick, onLogout, isAuthenticated, userProfile }) => {
         </Button>
       </div>
 
-      {/* Login/Logout Button */}
+      {/* Login/Profile Button */}
       <div className="flex items-center gap-4">
-        {isAuthenticated ? (
-          <Button
-            variant="outline"
-            className="rounded-full border-gray-600 text-white hover:border-red-500 hover:text-red-400 hover:scale-105 transition-all"
-            onClick={onLogout}
-          >
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </Button>
+        {isAuthenticated && userProfile ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="rounded-full h-10 px-3 hover:bg-gray-800 transition-all"
+              >
+                <Avatar className="h-8 w-8 mr-2">
+                  <AvatarImage src={userProfile.images?.[0]?.url} alt={userProfile.display_name} />
+                  <AvatarFallback className="bg-cyan-500 text-black font-semibold">
+                    {userProfile.display_name?.charAt(0).toUpperCase() || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="text-white font-medium">{userProfile.display_name}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-64 bg-gray-900 border-gray-700">
+              <DropdownMenuLabel className="text-gray-300">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-semibold text-white">{userProfile.display_name}</p>
+                  <p className="text-xs text-gray-400">{userProfile.email}</p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator className="bg-gray-700" />
+              <DropdownMenuItem 
+                className="text-gray-300 hover:bg-gray-800 focus:bg-gray-800 cursor-pointer"
+                onClick={() => window.open(userProfile.external_urls?.spotify, '_blank')}
+              >
+                <ExternalLink className="mr-2 h-4 w-4" />
+                Open in Spotify
+              </DropdownMenuItem>
+              <DropdownMenuSeparator className="bg-gray-700" />
+              <DropdownMenuItem 
+                className="text-red-400 hover:bg-gray-800 focus:bg-gray-800 cursor-pointer"
+                onClick={onLogout}
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         ) : (
           <Button
             variant="outline"
