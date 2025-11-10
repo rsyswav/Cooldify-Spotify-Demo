@@ -37,7 +37,33 @@ const Home = () => {
     if (authenticated) {
       loadUserData();
     }
+    
+    // Always load uploaded songs from Supabase
+    loadUploadedSongs();
   }, []);
+
+  const loadUploadedSongs = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/api/songs/`);
+      if (response.data.songs) {
+        // Transform Supabase songs to match Spotify format
+        const transformedSongs = response.data.songs.map(song => ({
+          id: song.id,
+          name: song.title,
+          artists: [{ name: song.artist }],
+          album: {
+            name: song.album || 'Unknown Album',
+            images: [{ url: song.cover_image_url || 'https://via.placeholder.com/300' }]
+          },
+          duration_ms: song.duration_ms || 0,
+          preview_url: song.audio_url // This is the full audio file, not just preview
+        }));
+        setUploadedSongs(transformedSongs);
+      }
+    } catch (error) {
+      console.error('Error loading uploaded songs:', error);
+    }
+  };
 
   const loadUserData = async () => {
     setLoading(true);
