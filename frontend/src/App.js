@@ -180,6 +180,9 @@ const Home = () => {
           playlists={allPlaylists}
           onPlaylistSelect={handlePlaylistSelect}
           selectedPlaylist={selectedPlaylist}
+          onTrackSelect={handleTrackSelect}
+          isAuthenticated={isAuthenticated}
+          onSearch={handleSearch}
         />
         <div className="flex-1 flex flex-col relative">
           <Header 
