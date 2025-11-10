@@ -80,9 +80,14 @@ const Home = () => {
       // Load tracks for selected playlist
       const playlistTracks = await spotifyApi.getPlaylistTracks(playlist.id);
       console.log('Playlist tracks loaded:', playlistTracks?.length);
+      console.log('First track sample:', playlistTracks?.[0]);
       
       if (playlistTracks && playlistTracks.length > 0) {
         setTracks(playlistTracks);
+        
+        // Count tracks with preview URLs
+        const tracksWithPreview = playlistTracks.filter(t => t.preview_url).length;
+        console.log(`Tracks with preview: ${tracksWithPreview}/${playlistTracks.length}`);
         
         // Load mood data for playlist
         try {
@@ -95,22 +100,29 @@ const Home = () => {
           // Continue even if mood fails
         }
 
+        const previewNote = tracksWithPreview === 0 
+          ? ' (No preview URLs available)' 
+          : tracksWithPreview < playlistTracks.length 
+            ? ` (${tracksWithPreview} with preview)` 
+            : '';
+        
         toast({
           title: "Playlist Loaded",
-          description: `${playlist.name} - ${playlistTracks.length} tracks`,
+          description: `${playlist.name} - ${playlistTracks.length} tracks${previewNote}`,
         });
       } else {
+        console.warn('No tracks returned from API');
         toast({
-          title: "Empty Playlist",
-          description: `${playlist.name} has no tracks`,
+          title: "No Tracks Found",
+          description: `${playlist.name} - Unable to load tracks. Please check if you're logged in.`,
           variant: "destructive"
         });
       }
     } catch (error) {
       console.error('Error loading playlist:', error);
       toast({
-        title: "Error",
-        description: "Failed to load playlist details.",
+        title: "Error Loading Playlist",
+        description: error.response?.data?.detail || "Failed to load playlist. Please ensure you're logged in with Spotify.",
         variant: "destructive"
       });
     } finally {
