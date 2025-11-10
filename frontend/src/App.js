@@ -135,10 +135,19 @@ const Home = () => {
 
   const handleTrackSelect = (track) => {
     setCurrentTrack(track);
-    toast({
-      title: "Now Playing",
-      description: `${track.name} by ${track.artists.map(a => a.name).join(', ')}`,
-    });
+    
+    if (!track.preview_url) {
+      toast({
+        title: "Preview Not Available",
+        description: `${track.name} - Spotify doesn't provide a preview for this track. Full playback requires Spotify Premium.`,
+        variant: "destructive"
+      });
+    } else {
+      toast({
+        title: "Now Playing",
+        description: `${track.name} by ${track.artists.map(a => a.name).join(', ')}`,
+      });
+    }
   };
 
   const handleLoginClick = async () => {
