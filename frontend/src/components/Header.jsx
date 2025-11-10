@@ -1,8 +1,17 @@
 import React from 'react';
-import { ChevronLeft, ChevronRight, User, LogOut } from 'lucide-react';
+import { ChevronLeft, ChevronRight, User, LogOut, ExternalLink } from 'lucide-react';
 import { Button } from './ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
-const Header = ({ onLoginClick, onLogout, isAuthenticated }) => {
+const Header = ({ onLoginClick, onLogout, isAuthenticated, userProfile }) => {
   return (
     <div className="h-16 bg-gradient-to-b from-black/60 to-transparent backdrop-blur-sm flex items-center justify-between px-8 absolute top-0 left-64 right-0 z-10">
       {/* Navigation Arrows */}
