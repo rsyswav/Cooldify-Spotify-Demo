@@ -184,14 +184,29 @@ const Home = () => {
   };
 
   const handleCommunityClick = () => {
+    if (uploadedSongs.length === 0) {
+      toast({
+        title: "No Uploads Yet",
+        description: "No songs have been uploaded to the community yet. Be the first to upload!",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setShowCommunityPlaylist(true);
-    setSelectedPlaylist({
+    const communityPlaylist = {
       id: 'community',
       name: 'Community Uploads',
       description: `${uploadedSongs.length} songs uploaded by the community`,
       images: [{ url: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=300&h=300&fit=crop' }],
-    });
+    };
+    setSelectedPlaylist(communityPlaylist);
     setTracks(uploadedSongs);
+    
+    console.log('Community playlist clicked', {
+      playlistId: communityPlaylist.id,
+      tracksCount: uploadedSongs.length
+    });
     
     toast({
       title: "Community Uploads",
