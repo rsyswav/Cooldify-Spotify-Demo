@@ -24,8 +24,15 @@ const Player = ({ currentTrack }) => {
 
   useEffect(() => {
     if (audioRef.current && currentTrack) {
-      audioRef.current.src = currentTrack.preview_url;
-      setDuration(currentTrack.duration_ms / 1000);
+      if (currentTrack.preview_url) {
+        audioRef.current.src = currentTrack.preview_url;
+        setDuration(currentTrack.duration_ms / 1000);
+      } else {
+        // No preview URL available
+        audioRef.current.src = '';
+        setDuration(currentTrack.duration_ms / 1000);
+        setIsPlaying(false);
+      }
     }
   }, [currentTrack]);
 
