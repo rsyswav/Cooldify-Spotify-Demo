@@ -5,8 +5,57 @@ import { Button } from './ui/button';
 import { Progress } from './ui/progress';
 
 const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodData, loading, isAuthenticated, uploadedSongs, selectedPlaylist }) => {
+  const scrollContainerRef = useRef(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [showScrollBottom, setShowScrollBottom] = useState(true);
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current;
+      setShowScrollTop(scrollTop > 200);
+      setShowScrollBottom(scrollTop < scrollHeight - clientHeight - 200);
+    }
+  };
+
+  const scrollToTop = () => {
+    scrollContainerRef.current?.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  const scrollToBottom = () => {
+    scrollContainerRef.current?.scrollTo({
+      top: scrollContainerRef.current.scrollHeight,
+      behavior: 'smooth'
+    });
+  };
+
+  const scrollUp = () => {
+    scrollContainerRef.current?.scrollBy({
+      top: -500,
+      behavior: 'smooth'
+    });
+  };
+
+  const scrollDown = () => {
+    scrollContainerRef.current?.scrollBy({
+      top: 500,
+      behavior: 'smooth'
+    });
+  };
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      handleScroll(); // Initial check
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
   return (
-    <div className="flex-1 overflow-y-auto bg-gradient-to-b from-gray-900 via-gray-900 to-black">
+    <div className="flex-1 overflow-y-auto bg-gradient-to-b from-gray-900 via-gray-900 to-black relative" ref={scrollContainerRef}>
       <div className="p-8">
         {/* Loading Indicator */}
         {loading && (
