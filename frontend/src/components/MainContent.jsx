@@ -133,9 +133,59 @@ const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodD
           </Card>
         </div>
 
+        {/* Uploaded Songs Section */}
+        {uploadedSongs && uploadedSongs.length > 0 && (
+          <div className="mb-12">
+            <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
+              <Music2 className="mr-2 h-6 w-6 text-cyan-400" />
+              Community Uploads
+            </h3>
+            <div className="space-y-2">
+              {uploadedSongs.map((track, index) => (
+                <div
+                  key={track.id}
+                  onClick={() => onTrackSelect(track)}
+                  className="group flex items-center p-3 rounded-lg hover:bg-gray-800/40 transition-all duration-200 cursor-pointer"
+                >
+                  <span className="text-gray-400 w-8 text-center group-hover:hidden">
+                    {index + 1}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="w-8 h-8 hidden group-hover:flex text-cyan-400"
+                  >
+                    <Play className="h-4 w-4" fill="currentColor" />
+                  </Button>
+                  <img
+                    src={track.album.images[0]?.url}
+                    alt={track.name}
+                    className="w-12 h-12 rounded ml-4 shadow-md"
+                  />
+                  <div className="ml-4 flex-1">
+                    <p className="text-white font-medium">{track.name}</p>
+                    <p className="text-sm text-gray-400">
+                      {track.artists.map((a) => a.name).join(', ')}
+                    </p>
+                  </div>
+                  <p className="text-gray-400 text-sm">{track.album.name}</p>
+                  <p className="text-gray-400 text-sm ml-8">
+                    {Math.floor(track.duration_ms / 60000)}:
+                    {Math.floor((track.duration_ms % 60000) / 1000)
+                      .toString()
+                      .padStart(2, '0')}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Tracks List */}
         <div>
-          <h3 className="text-2xl font-bold text-white mb-4">Popular Tracks</h3>
+          <h3 className="text-2xl font-bold text-white mb-4">
+            {isAuthenticated ? 'From Spotify' : 'Popular Tracks'}
+          </h3>
           
           {/* Info about preview availability */}
           {isAuthenticated && tracks.length > 0 && (
