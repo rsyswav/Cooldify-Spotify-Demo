@@ -130,6 +130,7 @@ const Home = () => {
   const handleLogout = () => {
     spotifyApi.clearTokens();
     setIsAuthenticated(false);
+    setUserProfile(null);
     setPlaylists(mockPlaylists);
     setTracks(mockTracks);
     setMoodData(mockMoodData);
