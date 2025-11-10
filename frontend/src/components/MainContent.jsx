@@ -288,6 +288,30 @@ const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodD
           </div>
         </div>
       </div>
+
+      {/* Scroll Buttons */}
+      <div className="fixed bottom-32 right-8 flex flex-col gap-2 z-50">
+        {showScrollTop && (
+          <Button
+            onClick={scrollUp}
+            className="bg-cyan-500 hover:bg-cyan-600 text-black rounded-full h-12 w-12 shadow-xl transition-all hover:scale-110"
+            size="icon"
+            title="Scroll Up"
+          >
+            <ChevronUp className="h-6 w-6" />
+          </Button>
+        )}
+        {showScrollBottom && (
+          <Button
+            onClick={scrollDown}
+            className="bg-cyan-500 hover:bg-cyan-600 text-black rounded-full h-12 w-12 shadow-xl transition-all hover:scale-110"
+            size="icon"
+            title="Scroll Down"
+          >
+            <ChevronDown className="h-6 w-6" />
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
