@@ -48,13 +48,46 @@ const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodD
     });
   };
 
+  const handlePlaylistScroll = () => {
+    if (playlistScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = playlistScrollRef.current;
+      setShowPlaylistScrollLeft(scrollLeft > 10);
+      setShowPlaylistScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  const scrollPlaylistsLeft = () => {
+    playlistScrollRef.current?.scrollBy({
+      left: -600,
+      behavior: 'smooth'
+    });
+  };
+
+  const scrollPlaylistsRight = () => {
+    playlistScrollRef.current?.scrollBy({
+      left: 600,
+      behavior: 'smooth'
+    });
+  };
+
   useEffect(() => {
     const container = scrollContainerRef.current;
+    const playlistContainer = playlistScrollRef.current;
+    
     if (container) {
       container.addEventListener('scroll', handleScroll);
       handleScroll(); // Initial check
-      return () => container.removeEventListener('scroll', handleScroll);
     }
+    
+    if (playlistContainer) {
+      playlistContainer.addEventListener('scroll', handlePlaylistScroll);
+      handlePlaylistScroll(); // Initial check
+    }
+    
+    return () => {
+      container?.removeEventListener('scroll', handleScroll);
+      playlistContainer?.removeEventListener('scroll', handlePlaylistScroll);
+    };
   }, []);
 
   return (
