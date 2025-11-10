@@ -243,6 +243,11 @@ const Home = () => {
         </div>
       </div>
       <Player currentTrack={currentTrack} />
+      <UploadSongDialog
+        isOpen={uploadDialogOpen}
+        onClose={() => setUploadDialogOpen(false)}
+        onUploadSuccess={handleUploadSuccess}
+      />
       <Toaster />
     </div>
   );
