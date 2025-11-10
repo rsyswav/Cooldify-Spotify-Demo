@@ -11,6 +11,10 @@ import { mockPlaylists, mockTracks, mockMoodData, mockCurrentTrack } from "./moc
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "./hooks/use-toast";
 import spotifyApi from "./services/spotifyApi";
+import { supabaseService } from "./services/supabaseClient";
+import axios from "axios";
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const Home = () => {
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
