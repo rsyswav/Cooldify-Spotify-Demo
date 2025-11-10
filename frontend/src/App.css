@@ -44,6 +44,16 @@ body, html, #root, .App {
     scrollbar-color: #282828 #121212;
 }
 
+/* Hide scrollbar for horizontal scroll */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 /* Smooth transitions for interactive elements */
 button, a {
     transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
