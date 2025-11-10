@@ -136,6 +136,16 @@ const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodD
         {/* Tracks List */}
         <div>
           <h3 className="text-2xl font-bold text-white mb-4">Popular Tracks</h3>
+          
+          {/* Info about preview availability */}
+          {isAuthenticated && tracks.length > 0 && (
+            <div className="mb-4 p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-lg">
+              <p className="text-sm text-cyan-400">
+                ℹ️ Some tracks may not have preview URLs available. Spotify only provides 30-second previews for certain tracks.
+              </p>
+            </div>
+          )}
+          
           <div className="space-y-2">
             {tracks.map((track, index) => (
               <div
