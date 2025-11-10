@@ -147,6 +147,18 @@ const Home = () => {
     }
   };
 
+  const handleUploadClick = () => {
+    setUploadDialogOpen(true);
+  };
+
+  const handleUploadSuccess = (song) => {
+    toast({
+      title: "Upload Successful!",
+      description: `${song.title} by ${song.artist} has been uploaded.`,
+    });
+    // Optionally reload songs or add to current tracks
+  };
+
   const handleTrackSelect = (track) => {
     setCurrentTrack(track);
     
