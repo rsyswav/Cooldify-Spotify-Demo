@@ -190,6 +190,8 @@ const Home = () => {
             onLogout={handleLogout}
             isAuthenticated={isAuthenticated}
             userProfile={userProfile}
+            onSearch={handleSearch}
+            onTrackSelect={handleTrackSelect}
           />
           <div className="pt-16 flex-1 overflow-hidden">
             <MainContent
