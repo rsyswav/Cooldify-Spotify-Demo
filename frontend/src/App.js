@@ -183,6 +183,22 @@ const Home = () => {
     setUploadDialogOpen(true);
   };
 
+  const handleCommunityClick = () => {
+    setShowCommunityPlaylist(true);
+    setSelectedPlaylist({
+      id: 'community',
+      name: 'Community Uploads',
+      description: `${uploadedSongs.length} songs uploaded by the community`,
+      images: [{ url: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=300&h=300&fit=crop' }],
+    });
+    setTracks(uploadedSongs);
+    
+    toast({
+      title: "Community Uploads",
+      description: `Showing ${uploadedSongs.length} community uploaded songs`,
+    });
+  };
+
   const handleUploadSuccess = (song) => {
     toast({
       title: "Upload Successful!",
