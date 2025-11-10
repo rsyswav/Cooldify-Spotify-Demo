@@ -18,7 +18,11 @@ const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodD
         {/* Header */}
         <div className="mb-8">
           <h2 className="text-4xl font-bold text-white mb-2">Good evening</h2>
-          <p className="text-gray-400">Cool down with these playlists</p>
+          <p className="text-gray-400">
+            {isAuthenticated 
+              ? 'Cool down with your personalized playlists' 
+              : 'Cool down with these playlists (Demo Mode - Login for full experience)'}
+          </p>
         </div>
 
         {/* Featured Playlists Grid */}
