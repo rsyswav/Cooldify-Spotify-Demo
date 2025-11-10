@@ -17,12 +17,12 @@ class SpotifyOAuth:
         self.auth_url = 'https://accounts.spotify.com/authorize'
         self.token_url = 'https://accounts.spotify.com/api/token'
         self.scopes = [
-            'playlist-read-public',
-            'playlist-read-private',
-            'user-library-read',
-            'streaming',
+            'user-read-private',
             'user-read-email',
-            'user-read-private'
+            'playlist-read-private',
+            'playlist-read-collaborative',
+            'user-library-read',
+            'user-top-read'
         ]
 
     def get_auth_url(self) -> str:
