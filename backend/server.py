@@ -70,6 +70,7 @@ async def get_status_checks():
 
 # Include the spotify router in the api router
 api_router.include_router(spotify_router)
+api_router.include_router(songs_router)
 
 # Include the main api router in the app
 app.include_router(api_router)
