@@ -1,6 +1,7 @@
-import React from 'react';
-import { ChevronLeft, ChevronRight, User, LogOut, ExternalLink } from 'lucide-react';
+import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight, User, LogOut, ExternalLink, Search, X } from 'lucide-react';
 import { Button } from './ui/button';
+import { Input } from './ui/input';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +12,59 @@ import {
 } from './ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
-const Header = ({ onLoginClick, onLogout, isAuthenticated, userProfile }) => {
+const Header = ({ onLoginClick, onLogout, isAuthenticated, userProfile, onSearch, onTrackSelect }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+
+  const handleSearch = async (query) => {
+    if (!query.trim() || !isAuthenticated) {
+      setSearchResults([]);
+      setShowResults(false);
+      return;
+    }
+
+    setIsSearching(true);
+    setShowResults(true);
+    try {
+      const results = await onSearch(query);
+      setSearchResults(results || []);
+    } catch (error) {
+      console.error('Search error:', error);
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    
+    if (value.length > 2) {
+      const timeoutId = setTimeout(() => {
+        handleSearch(value);
+      }, 500);
+      return () => clearTimeout(timeoutId);
+    } else {
+      setSearchResults([]);
+      setShowResults(false);
+    }
+  };
+
+  const handleTrackClick = (track) => {
+    onTrackSelect(track);
+    setSearchQuery('');
+    setSearchResults([]);
+    setShowResults(false);
+  };
+
+  const formatDuration = (ms) => {
+    const minutes = Math.floor(ms / 60000);
+    const seconds = Math.floor((ms % 60000) / 1000);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
   return (
     <div className="h-16 bg-gradient-to-b from-black/60 to-transparent backdrop-blur-sm flex items-center justify-between px-8 absolute top-0 left-64 right-0 z-10">
       {/* Navigation Arrows */}
