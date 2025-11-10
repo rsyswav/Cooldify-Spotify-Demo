@@ -133,8 +133,8 @@ const MainContent = ({ playlists, onPlaylistSelect, onTrackSelect, tracks, moodD
           </Card>
         </div>
 
-        {/* Uploaded Songs Section - Only show when not viewing as playlist */}
-        {uploadedSongs && uploadedSongs.length > 0 && !window.location.hash.includes('community') && (
+        {/* Uploaded Songs Section - Only show when not viewing community playlist */}
+        {uploadedSongs && uploadedSongs.length > 0 && selectedPlaylist?.id !== 'community' && (
           <div className="mb-12">
             <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
               <Music2 className="mr-2 h-6 w-6 text-cyan-400" />
