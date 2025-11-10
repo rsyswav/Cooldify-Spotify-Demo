@@ -187,7 +187,8 @@ const Home = () => {
       title: "Upload Successful!",
       description: `${song.title} by ${song.artist} has been uploaded.`,
     });
-    // Optionally reload songs or add to current tracks
+    // Reload uploaded songs
+    loadUploadedSongs();
   };
 
   const handleTrackSelect = (track) => {
