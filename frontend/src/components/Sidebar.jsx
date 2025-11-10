@@ -1,9 +1,9 @@
 import React from 'react';
-import { Home, Library, Plus, Heart, Music, Upload } from 'lucide-react';
+import { Home, Library, Plus, Heart, Music, Upload, Users } from 'lucide-react';
 import { Button } from './ui/button';
 import SearchBar from './SearchBar';
 
-const Sidebar = ({ playlists, onPlaylistSelect, selectedPlaylist, onTrackSelect, isAuthenticated, onSearch, onUploadClick }) => {
+const Sidebar = ({ playlists, onPlaylistSelect, selectedPlaylist, onTrackSelect, isAuthenticated, onSearch, onUploadClick, onCommunityClick, uploadedSongsCount }) => {
   return (
     <div className="w-64 bg-black h-full flex flex-col">
       {/* Logo */}
