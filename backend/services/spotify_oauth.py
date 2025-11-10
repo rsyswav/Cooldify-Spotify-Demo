@@ -2,9 +2,15 @@ import os
 import httpx
 from urllib.parse import urlencode
 from typing import Dict, Optional
+from dotenv import load_dotenv
+from pathlib import Path
 
 class SpotifyOAuth:
     def __init__(self):
+        # Load environment variables
+        ROOT_DIR = Path(__file__).parent.parent
+        load_dotenv(ROOT_DIR / '.env')
+        
         self.client_id = os.environ.get('SPOTIFY_CLIENT_ID')
         self.client_secret = os.environ.get('SPOTIFY_CLIENT_SECRET')
         self.redirect_uri = os.environ.get('SPOTIFY_REDIRECT_URI')
