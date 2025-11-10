@@ -128,8 +128,14 @@ const Player = ({ currentTrack }) => {
           </Button>
           <Button
             size="icon"
-            className="bg-white hover:bg-gray-200 text-black rounded-full h-10 w-10 transition-all hover:scale-105"
+            className={`rounded-full h-10 w-10 transition-all hover:scale-105 ${
+              !currentTrack?.preview_url 
+                ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
+                : 'bg-white hover:bg-gray-200 text-black'
+            }`}
             onClick={togglePlay}
+            disabled={!currentTrack?.preview_url}
+            title={!currentTrack?.preview_url ? 'Preview not available for this track' : ''}
           >
             {isPlaying ? (
               <Pause className="h-5 w-5" fill="currentColor" />
